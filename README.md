@@ -6,11 +6,11 @@ By Kevin 'Assyrianic' Yonan ([@assyrianic](https://github.com/assyrianic))
 
 rmem implements 3 types of memory structures:
 
- - Memory Pool
- - Object Pool
- - Double-Ended aka Bi(furcated) Stack
+ - [Memory Pool](memory-pool)
+ - [Object Pool](object-pool)
+ - [Double-Ended aka Bi(furcated) Stack](bistack)
 
-# Memory Pool
+## Memory Pool
 	
 The Memory Pool is a quick, efficient, and minimal free list & stack-based allocator.
 
@@ -20,7 +20,7 @@ Memory Pool's purpose is the following list:
 * Reduce the possibilities of memory leaks for beginner developers.
 * Being able to flexibly range check memory if necessary.
 
-## Data Implementation
+### Data Implementation
 
 The memory pool encapsulates two public structs:
 
@@ -57,7 +57,7 @@ The memory pool encapsulates two public structs:
 	} MemPool;
 ```
 
-## Usage
+### Usage
 
 The memory pool is designed to be used as a direct object.
 
@@ -148,14 +148,14 @@ Finally, to get the total amount of memory remaining (to make sure you don't acc
 	size_t GetMemPoolFreeMemory(const MemPool mempool);
 ```
 
-# Object Pool
+## Object Pool
 
 The Object Pool is a fast and minimal fixed-size allocator.
 
 Object Pool was created as a complement to the Memory Pool.
 Due to the general purpose nature of Memory Pool, memory block fragmentations can affect allocation and deallocation speeds. Because of this, the Object pool succeeds by having no fragmentation and accommodating for allocating fixed-size data while the memory pool accommodates allocating variadic/differently sized data.
 
-## Implementation
+### Data Implementation
 
 The object pool is implemented as a hybrid array-stack of cells that are large enough to hold the size of your data at initialization:
 ```c
@@ -165,7 +165,7 @@ The object pool is implemented as a hybrid array-stack of cells that are large e
 	} ObjPool;
 ```
 
-## Usage
+### Usage
 
 The object pool is designed to be used as a direct object.
 We have two constructor functions:
@@ -233,7 +233,7 @@ Once you're free with the object pool, you dispose of it by using `DestroyObjPoo
 	DestroyObjPool(&vector_pool);
 ```
 
-# Double-Ended aka Bi(furcated) Stack
+## BiStack
 
 The BiStack is a fast & efficient bifurcated stack "bi-stack" allocator.
 
@@ -242,7 +242,7 @@ BiStack's purpose is the following list:
 * A quick, efficient way of allocating temporary, dynamically-sizeable memory during various operations.
 * Bifurcated to allow certain temporary data to have a different lifetime from other, temporary data.
 
-## Data Implementation
+### Data Implementation
 
 The bifurcated stack encapsulates one public struct:
 * `mem` which is an unsigned integer large enough to represent a pointer; the pointer value it holds is the memory address of the backing buffer.
@@ -256,7 +256,7 @@ The bifurcated stack encapsulates one public struct:
 	} BiStack;
 ```
 
-## Usage
+### Usage
 
 The bi-stack is designed to be used as a direct object.
 There are two constructor functions:
