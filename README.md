@@ -6,9 +6,9 @@ By Kevin 'Assyrianic' Yonan ([@assyrianic](https://github.com/assyrianic))
 
 rmem implements 3 types of memory structures:
 
- - [Memory Pool](memory-pool)
- - [Object Pool](object-pool)
- - [Double-Ended aka Bi(furcated) Stack](bistack)
+ - [Memory Pool](#memory-pool)
+ - [Object Pool](#object-pool)
+ - [Double-Ended aka Bi(furcated) Stack](#bistack)
 
 ## Memory Pool
 	
