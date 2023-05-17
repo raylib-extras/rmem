@@ -1,36 +1,34 @@
 /**********************************************************************************************
 *
-*   rmem v1.3 - raylib memory pool and objects pool
+*   rmem v1.3 - memory pool and objects pool
 *
-*   A quick, efficient, and minimal free list and arena-based allocator
+*   DESCRIPTION:
+*       A quick, efficient, and minimal free list and arena-based allocator
 *
-*   PURPOSE:
-*     - A quicker, efficient memory allocator alternative to 'malloc()' and friends.
-*     - Reduce the possibilities of memory leaks for beginner developers using raylib.
-*     - Being able to flexibly range check memory if necessary.
+*   POURPOSE:
+*       - A quicker, efficient memory allocator alternative to 'malloc()' and friends.
+*       - Reduce the possibilities of memory leaks for beginner developers using raylib.
+*       - Being able to flexibly range check memory if necessary.
 *
 *   CONFIGURATION:
-*
-*   #define RMEM_IMPLEMENTATION
-*       Generates the implementation of the library into the included file.
-*       If not defined, the library is in header only mode and can be included in other headers
-*       or source files without problems. But only ONE file should hold the implementation.
+*       #define RMEM_IMPLEMENTATION
+*           Generates the implementation of the library into the included file.
+*           If not defined, the library is in header only mode and can be included in other headers
+*           or source files without problems. But only ONE file should hold the implementation.
 *
 *   DOCUMENTATION:
-*
 *       raylib Wiki: https://github.com/raysan5/raylib/wiki/raylib-memory-pool
 *       Usage example with raylib: https://github.com/raysan5/raylib/issues/1329
 *
-*   CHANGELOG:
-*
-*       v1.0: First version
-*       v1.1: Bug patches for the mempool and addition of object pool
-*       v1.2: Addition of bidirectional arena
-*       v1.3: Several changes:
-*         Pptimizations of allocators
-*         Renamed 'Stack' to 'Arena'
-*         Replaced certain define constants with an anonymous enum
-*         Refactored MemPool to no longer require active or deferred defragging
+*   VERSIONS HISTORY:
+*       1.3     Several changes:
+*               Optimizations of allocators
+*               Renamed 'Stack' to 'Arena'
+*               Replaced certain define constants with an anonymous enum
+*               Refactored MemPool to no longer require active or deferred defragging
+*       1.2     Addition of bidirectional arena
+*       1.1     Bug patches for the mempool and addition of object pool
+*       1.0     First version
 *
 *
 *   LICENSE: zlib/libpng
