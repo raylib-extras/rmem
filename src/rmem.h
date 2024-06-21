@@ -378,7 +378,7 @@ MemPool CreateMemPool(const size_t size)
 {
     MemPool mempool = { 0 };
 
-    if (size == 0) return mempool;
+    if ((size == 0) || (size <= sizeof(MemNode))) return mempool;
     else
     {
         // Align the mempool size to at least the size of an alloc node.
@@ -574,7 +574,7 @@ ObjPool CreateObjPool(const size_t objsize, const size_t len)
 {
     ObjPool objpool = { 0 };
 
-    if ((len == 0) || (objsize == 0)) return objpool;
+    if ((len == 0) || (objsize < sizeof(size_t))) return objpool;
     else
     {
         const size_t aligned_size = __AlignSize(objsize, sizeof(size_t));
