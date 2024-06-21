@@ -17,7 +17,7 @@
 *           or source files without problems. But only ONE file should hold the implementation.
 *
 *   DOCUMENTATION:
-*       raylib Wiki: https://github.com/raysan5/raylib/wiki/raylib-memory-pool
+*       Repo Readme: https://github.com/raylib-extras/rmem
 *       Usage example with raylib: https://github.com/raysan5/raylib/issues/1329
 *
 *   VERSIONS HISTORY:
@@ -382,7 +382,7 @@ MemPool CreateMemPool(const size_t size)
     else
     {
         // Align the mempool size to at least the size of an alloc node.
-        uint8_t *const restrict buf = malloc(size*sizeof *buf);
+        uint8_t *const restrict buf = malloc(size*sizeof(uint8_t));
 
         if (buf==NULL) return mempool;
         else
@@ -428,7 +428,7 @@ void *MemPoolAlloc(MemPool *const mempool, const size_t size)
     else
     {
         MemNode *new_mem = NULL;
-        const size_t ALLOC_SIZE = __AlignSize(size + sizeof *new_mem, sizeof(intptr_t));
+        const size_t ALLOC_SIZE = __AlignSize(size + sizeof(MemNode), sizeof(intptr_t));
         const size_t BUCKET_SLOT = (ALLOC_SIZE >> MEMPOOL_BUCKET_BITS) - 1;
 
         // If the size is small enough, let's check if our buckets has a fitting memory block.
@@ -468,9 +468,9 @@ void *MemPoolAlloc(MemPool *const mempool, const size_t size)
         // |   space    | highest addr of block
         // --------------
         new_mem->next = new_mem->prev = NULL;
-        uint8_t *const restrict final_mem = (uint8_t *)new_mem + sizeof *new_mem;
+        uint8_t *const restrict final_mem = (uint8_t *)new_mem + sizeof(MemNode);
 
-        return memset(final_mem, 0, new_mem->size - sizeof *new_mem);
+        return memset(final_mem, 0, new_mem->size - sizeof(MemNode));
     }
 }
 
@@ -482,14 +482,14 @@ void *MemPoolRealloc(MemPool *const restrict mempool, void *const ptr, const siz
     else if ((uintptr_t)ptr - sizeof(MemNode) < mempool->arena.mem) return NULL;
     else
     {
-        MemNode *const node = (MemNode *)((uint8_t *)ptr - sizeof *node);
-        const size_t NODE_SIZE = sizeof *node;
+        MemNode *const node = (MemNode *)((uint8_t *)ptr - sizeof(MemNode));
+        const size_t NODE_SIZE = sizeof(MemNode);
         uint8_t *const resized_block = MemPoolAlloc(mempool, size);
 
         if (resized_block == NULL) return NULL;
         else
         {
-            MemNode *const resized = (MemNode *)(resized_block - sizeof *resized);
+            MemNode *const resized = (MemNode *)(resized_block - sizeof(MemNode));
             memmove(resized_block, ptr, (node->size > resized->size)? (resized->size - NODE_SIZE) : (node->size - NODE_SIZE));
             MemPoolFree(mempool, ptr);
 
@@ -523,8 +523,10 @@ void MemPoolFree(MemPool *const restrict mempool, void *const ptr)
         else
         {
             // try to place it into bucket or large freelist.
-            struct AllocList *const l = (BUCKET_SLOT < MEMPOOL_BUCKET_SIZE) ? &mempool->buckets[BUCKET_SLOT] : &mempool->large;
-            __InsertMemNode(mempool, l, mem_node, (BUCKET_SLOT < MEMPOOL_BUCKET_SIZE));
+            if (BUCKET_SLOT < MEMPOOL_BUCKET_SIZE) {
+                __InsertMemNode(mempool, &mempool->buckets[BUCKET_SLOT], mem_node, true);
+            } else {
+                __InsertMemNode(mempool, &mempool->large, mem_node, false);
         }
     }
 }
@@ -688,7 +690,7 @@ BiStack CreateBiStack(const size_t len)
 
     if (len == 0) return destack;
 
-    uint8_t *const buf = malloc(len*sizeof *buf);
+    uint8_t *const buf = malloc(len*sizeof(uint8_t));
     if (buf == NULL) return destack;
     destack.size = len;
     destack.mem = (uintptr_t)buf;
