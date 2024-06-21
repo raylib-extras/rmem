@@ -378,7 +378,7 @@ MemPool CreateMemPool(const size_t size)
 {
     MemPool mempool = { 0 };
 
-    if ((size == 0) || (size <= sizeof(MemNode))) return mempool;
+    if ((size == 0) || (size < sizeof(MemNode))) return mempool;
     else
     {
         // Align the mempool size to at least the size of an alloc node.
@@ -400,7 +400,7 @@ MemPool CreateMemPoolFromBuffer(void *const restrict buf, const size_t size)
 {
     MemPool mempool = { 0 };
 
-    if ((size == 0) || (buf == NULL) || (size <= sizeof(MemNode))) return mempool;
+    if ((size == 0) || (buf == NULL) || (size < sizeof(MemNode))) return mempool;
     else
     {
         mempool.arena.size = size;
