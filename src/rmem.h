@@ -74,7 +74,6 @@
 //----------------------------------------------------------------------------------
 // Types and Structures Definition
 //----------------------------------------------------------------------------------
-
 enum {
     MEMPOOL_BUCKET_SIZE = 8,
     MEMPOOL_BUCKET_BITS = (sizeof(uintptr_t) >> 1) + 1,
@@ -124,7 +123,7 @@ extern "C" {            // Prevents name mangling of functions
 #endif
 
 //------------------------------------------------------------------------------------
-// Functions Declaration - Memory Pool
+// Module Functions Declaration: Memory Pool
 //------------------------------------------------------------------------------------
 RMEMAPI MemPool CreateMemPool(size_t bytes);
 RMEMAPI MemPool CreateMemPoolFromBuffer(void *buf, size_t bytes);
@@ -138,7 +137,7 @@ RMEMAPI void MemPoolReset(MemPool *mempool);
 RMEMAPI size_t GetMemPoolFreeMemory(const MemPool mempool);
 
 //------------------------------------------------------------------------------------
-// Functions Declaration - Object Pool
+// Module Functions Declaration: Object Pool
 //------------------------------------------------------------------------------------
 RMEMAPI ObjPool CreateObjPool(size_t objsize, size_t len);
 RMEMAPI ObjPool CreateObjPoolFromBuffer(void *buf, size_t objsize, size_t len);
@@ -149,7 +148,7 @@ RMEMAPI void ObjPoolFree(ObjPool *objpool, void *ptr);
 RMEMAPI void ObjPoolCleanUp(ObjPool *objpool, void **ptrref);
 
 //------------------------------------------------------------------------------------
-// Functions Declaration - Double-Ended Stack
+// Module Functions Declaration: Double-Ended Stack
 //------------------------------------------------------------------------------------
 RMEMAPI BiStack CreateBiStack(size_t len);
 RMEMAPI BiStack CreateBiStackFromBuffer(void *buf, size_t len);
@@ -199,7 +198,7 @@ RMEMAPI intptr_t BiStackMargins(BiStack destack);
 // ...
 
 //----------------------------------------------------------------------------------
-// Module specific Functions Declaration
+// Module Internal Functions Definition
 //----------------------------------------------------------------------------------
 static inline size_t __AlignSize(const size_t size, const size_t align)
 {
@@ -371,9 +370,8 @@ static void __InsertMemNode(MemPool *const mempool, AllocList *const list, MemNo
 }
 
 //----------------------------------------------------------------------------------
-// Module Functions Definition - Memory Pool
+// Module Functions Definition: Memory Pool
 //----------------------------------------------------------------------------------
-
 MemPool CreateMemPool(const size_t size)
 {
     MemPool mempool = { 0 };
@@ -565,9 +563,8 @@ void MemPoolReset(MemPool *const mempool)
 }
 
 //----------------------------------------------------------------------------------
-// Module Functions Definition - Object Pool
+// Module Functions Definition: Object Pool
 //----------------------------------------------------------------------------------
-
 ObjPool CreateObjPool(const size_t objsize, const size_t len)
 {
     ObjPool objpool = { 0 };
@@ -677,11 +674,9 @@ void ObjPoolCleanUp(ObjPool *const restrict objpool, void **const restrict ptrre
     }
 }
 
-
 //----------------------------------------------------------------------------------
-// Module Functions Definition - Double-Ended Stack
+// Module Functions Definition: Double-Ended Stack
 //----------------------------------------------------------------------------------
-
 BiStack CreateBiStack(const size_t len)
 {
     BiStack destack = { 0 };
